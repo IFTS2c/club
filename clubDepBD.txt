@@ -1,0 +1,180 @@
+drop database if exists club;
+
+create database club;
+
+use club;
+
+create table actividad(
+cod_actividad int,
+nombre varchar(25),
+dia varchar(15),
+horario time,
+cupo int,
+precio_Socio double,
+precio_No_Socio double,
+constraint pk_actividad primary key (cod_actividad)
+)engine=innodb;
+
+insert into actividad value
+(0, "no hay actividad asignada"," "," ",0,0,0),
+(100, "Funcional", "lu-mi-vi", '18:00',2, 3000, 1000),
+(101, "Yoga", "ma-ju-sa", '19:00', 1, 3500, 1200),
+(102, "Pilates", "lu-mi-vi", '10:00', 2, 3500, 1200),
+(103, "Spinning", "ma-ju-sa", '9:00', 1, 3000, 1000),
+(104, "Dance", "lu-mi-vi", '20:00', 1, 3000, 1000),
+(105, "Streaching", "ma-ju-sa", "11:00", 0, 3700, 1300);
+
+
+create table usuario(
+id_usuario int auto_increment,
+nombre varchar(40),
+dni varchar(8),
+telefono varchar(15),
+asociado boolean,
+cod_actividad int,
+constraint pk_usuario primary key (id_usuario),
+constraint fk_actividad foreign key (cod_actividad) references actividad(cod_actividad)
+)engine=innodb;
+
+insert into usuario (nombre,dni,telefono,asociado,cod_actividad) value
+("Jose Martel", "12345678", "1133445566", true, 100),
+("Maria Ramirez", "23456789", "1133223355", false, 102),
+("Romina Sanchez", "34567890", "1122443355", true, 102),
+("Jorge Marchi", "12312345", "1165436543", true, 101),
+("Manuel Dario", "27234234", "1154542323", false, 100),
+("Daiana Ramos", "34563456", "1123236767", true, 104),
+("Paula Salas", "23345345", "1153545657", true, 103);
+
+create table cuota(
+id_cuota int auto_increment,
+id_usuario int,
+fecha_vto date,
+estado_de_pago boolean,
+deuda int,
+constraint pk_cuota primary key (id_cuota),
+constraint fk_usuario foreign key (id_usuario) references usuario(id_usuario)
+)engine=innodb;
+
+insert into cuota (id_usuario, fecha_vto, estado_de_pago, deuda) value
+(1, '2023-12-05', true, 0),
+(2, '2023-11-14', false, 0),
+(3, '2023-12-02', false, 3000),
+(4, '2023-12-03', true, 0),
+(1, '2023-10-17', true, 0),
+(6, '2023-12-06', true, 0),
+(7, '2023-11-29', true, 0),
+(5, '2023-10-30', false, 0);
+#(7, '2023-12-14', false,6000),
+#(3, '2023-12-13', false,3500);
+
+
+create table administrador(
+nickname varchar(20),
+pass varchar(20),
+constraint pk_administrador primary key (nickname)
+)engine=innodb;
+
+insert administrador select "admin", "admin";
+insert administrador select "1234", "1234";
+insert administrador select "1", "1";
+
+create table carnet(
+id_usuario int,
+entregado bool,
+fecha_entregado date,
+cantidad int,
+solicitado bool,
+fecha_solicitado date,
+constraint pk_carnet primary key (id_usuario)
+)engine=innodb;
+
+INSERT INTO carnet values #(id_usuario, entregado, cantidad) VALUES
+(1, false, "0001-01-01", 0, true, "2023-09-01"),
+(3, false, "0001-01-01", 0, true, "2023-09-01"),
+(4, false, "0001-01-01", 0, true, "2023-09-01"),
+(6, false, "0001-01-01", 0, true, "2023-09-01"),
+(7, false, "0001-01-01", 0, true, "2023-09-01");
+
+create table apto(
+id_usuario int,
+entregado bool,
+fecha_entregado date,
+constraint pk_apto primary key (id_usuario)
+)engine=innodb;
+
+INSERT INTO apto VALUES
+(1,true,"2023-06-12"),
+(2,true,"2023-09-22"),
+(3,true,"2023-06-17"),
+(4,true,"2023-08-18"),
+(5,true,"2023-04-12"),
+(6,true,"2023-09-1"),
+(7,true,"2023-03-15");
+
+
+delimiter //
+create procedure ingresoLogin(in Administ varchar(20), in Passw varchar(20))
+begin
+	select nickname 
+    from administrador u
+    where u.nickname = Administ and u.pass = Passw;
+end
+//
+delimiter ;
+
+# |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+#     			CARGAR DE ACA PARA ARRIBA
+# |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+call ingresoLogin("admin","admin");
+
+# Los inscriptos anotados a la actividad de codigo 102
+select u.nombre as "anotados a pilates", u.telefono from usuario u
+inner join actividad a on u.cod_actividad = a.cod_actividad
+where a.cod_actividad = 102;
+
+# Socios y cuotas ordenadas por vto
+SELECT * FROM usuario u
+INNER JOIN cuota c on c.id_usuario = u.id_usuario
+where u.asociado = true
+order by c.fecha_vto;
+
+# ultima cuotas de socios con vto <= curdate
+SELECT * FROM (
+				SELECT * FROM (SELECT u.*, c.id_cuota, c.fecha_vto, c.estado_de_pago, c.deuda 
+								FROM usuario u
+								INNER JOIN cuota c on c.id_usuario = u.id_usuario
+								WHERE u.asociado = true
+								ORDER BY c.fecha_vto) as T1
+				WHERE T1.fecha_vto IN (SELECT MAX(fecha_vto) FROM cuota c
+				INNER JOIN usuario u ON c.id_usuario = u.id_usuario
+				WHERE u.asociado = true
+				GROUP BY u.id_usuario)) as T2
+WHERE T2.fecha_vto <= CURDATE();
+
+# Usuarios y cuotas <= a fecha_vto sin pagar
+SELECT * FROM usuario u
+INNER JOIN cuota c on c.id_usuario = u.id_usuario
+WHERE fecha_vto <= CURDATE() AND u.asociado = true 
+order by fecha_vto desc limit 1;
+
+# Asociados y actividad
+SELECT * FROM usuario u
+INNER JOIN actividad a on u.cod_actividad = a.cod_actividad
+where u.asociado = true;
+
+SELECT fecha_vto FROM cuota order by fecha_vto desc;
+select * from actividad;
+select * from cuota c inner join usuario u on c.id_usuario = u.id_usuario where asociado = true;
+select * from usuario;
+select * from cuota where id_usuario = 1 or id_usuario = 4 order by fecha_vto desc;
+delete from cuota where id_cuota > 6;
+delete from usuario where id_usuario = 7;
+
+
+SELECT * FROM cuota WHERE id_usuario = 4 order by id_cuota desc limit 1;
+
+update usuario set cod_actividad = 0 where cod_actividad is null;
+
+select * from carnet;
