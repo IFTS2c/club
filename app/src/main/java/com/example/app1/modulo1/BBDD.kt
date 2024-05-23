@@ -77,6 +77,10 @@ class BBDD(contexto: Context): SQLiteOpenHelper(contexto, bbdd, null,2) {
             usRes.id = resultado.getInt(0)
             usRes.username =  resultado.getString(1)
             usRes.password = resultado.getString(2)
+            usRes.nombreApellido = resultado.getString(3)
+            usRes.dni = resultado.getString(4)
+            usRes.email = resultado.getString(5)
+            usRes.asociado = resultado.getInt(6)==1
             Log.i("modulo1","LeerUno => id: ${usRes.id} username: ${usRes.username} pass: ${usRes.password} nomAp: ${usRes.nombreApellido}. dni: ${usRes.dni}, email: ${usRes.email}, asoc: ${usRes.asociado}")
             resultado.close()
             return usRes

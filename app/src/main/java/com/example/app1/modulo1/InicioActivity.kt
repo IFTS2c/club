@@ -43,7 +43,6 @@ class InicioActivity : AppCompatActivity() {
             val inputPass:String = findViewById<AppCompatEditText>(R.id.inputPass).text.toString()
 
             if (inputUser.isNotEmpty() && inputPass.isNotEmpty()){
-                Log.i("Modulo1","Boton pulsado. User: ${inputUser}, Pass: ${inputPass}")
                 val solicRead:UsuarioDB = leerUnDato(inputUser)
                 Log.i("Modulo1","solicRead ${solicRead.toString()}, inputPass ${inputPass}")
                 if (solicRead.password == inputPass){
