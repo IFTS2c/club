@@ -60,7 +60,7 @@
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/inputnombre"
         android:inputType="text"
-        android:text="Nombre y Apellido"
+        android:hint="Nombre y Apellido"
         android:textColor="#999999"
         android:layout_width="match_parent"
         android:layout_marginLeft="48dp"
@@ -80,7 +80,7 @@
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/inputDni"
         android:inputType="number"
-        android:text="Dni"
+        android:hint="Dni"
         android:textColor="#999999"
         android:layout_width="match_parent"
         android:layout_marginLeft="48dp"
@@ -99,7 +99,7 @@
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/inputEmail"
         android:inputType="textEmailAddress"
-        android:text="Email"
+        android:hint="Email"
         android:textAlignment="textStart"
         android:textColor="#999999"
         android:layout_width="match_parent"

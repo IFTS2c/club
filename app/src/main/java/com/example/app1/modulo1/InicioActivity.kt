@@ -37,10 +37,18 @@ class InicioActivity : AppCompatActivity() {
 
         val btnLogin = findViewById<AppCompatButton>(R.id.btnLogin)
         val btnReg = findViewById<AppCompatButton>(R.id.btnReg)
+        var etxUser:EditText = findViewById<AppCompatEditText>(R.id.inputUser)
+        etxUser.onFocusChangeListener = View.OnFocusChangeListener {
+            view, hasFocus -> if (hasFocus) { etxUser.hint = "" }
+        }
+        var etxPass:EditText = findViewById<AppCompatEditText>(R.id.inputPass)
+        etxPass.onFocusChangeListener = View.OnFocusChangeListener {
+                view, hasFocus -> if (hasFocus) { etxPass.hint = "" }
+        }
 
         btnLogin.setOnClickListener{
-            val inputUser:String = findViewById<AppCompatEditText>(R.id.inputUser).text.toString()
-            val inputPass:String = findViewById<AppCompatEditText>(R.id.inputPass).text.toString()
+            val inputUser:String = etxUser.text.toString()
+            val inputPass:String = etxPass.text.toString()
 
             if (inputUser.isNotEmpty() && inputPass.isNotEmpty()){
                 val solicRead:UsuarioDB = leerUnDato(inputUser)
@@ -107,6 +115,7 @@ class InicioActivity : AppCompatActivity() {
         Log.i("modulo1", res)
         return res
     }
+
 
 }
 
