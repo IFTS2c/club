@@ -6,14 +6,11 @@ import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.app1.R
 
 class regForm : AppCompatActivity() {
@@ -59,7 +56,7 @@ class regForm : AppCompatActivity() {
             var res = crearDatos(username, password, nombreApellidoText, dniText, emailText, asociado)
             Log.i("Modulo1","Nuevo Usuario = username: ${username}, pass: ${password}, nombreAp: ${nombreApellidoText}, dni: ${dniText}, email: ${emailText}, asoc: ${asociado}")
 
-            var usr:UsuarioDB? = leerUnDato(username)
+            var usr:UsuarioDB? = bbdd.leerUnDato(username)
             usr?.let {
                 intent = Intent(this, userForm::class.java)
                 intent.putExtra("username", username)
@@ -69,22 +66,19 @@ class regForm : AppCompatActivity() {
                 Toast.makeText(this, "Hubo un error al intentar registrar el usuario en la base de datos", Toast.LENGTH_SHORT).show()
             }
         }
-
-
-
     }
 
     fun crearDatos(username:String, password:String, nombreApellido:String, dni:String, email:String, asociado:Boolean):String{
-        var usr:UsuarioDB = UsuarioDB(username,password,nombreApellido, dni, email, asociado)
+        var usr = UsuarioDB(username,password,nombreApellido, dni, email, asociado)
         var res = bbdd.insertar(usr)
         Log.i("modulo1", res.toString())
         return res
     }
 
-    fun leerUnDato(username:String):UsuarioDB{
+    /*fun leerUnDato(username:String):UsuarioDB{
         var bbdd=BBDD(this)
         var res:UsuarioDB = bbdd.leerUno(username)
         Log.i("modulo1",res.toString())
         return res
-    }
+    }*/
 }

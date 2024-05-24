@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.app1.R
 
 class regUsrPassForm : AppCompatActivity() {
+    var bbdd=BBDD(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,7 +55,7 @@ class regUsrPassForm : AppCompatActivity() {
                 Toast.makeText(this, "No coinciden ambas password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else {
-                var us:UsuarioDB = leerUnDato(username)
+                var us:UsuarioDB = bbdd.leerUnDato(username)
                 if (us.username == username) {
                     Log.i("Modulo1", "Usuario existente")
                     Toast.makeText(this, "Usuario existente", Toast.LENGTH_SHORT).show()
@@ -68,7 +69,7 @@ class regUsrPassForm : AppCompatActivity() {
             }
         }
     }
-    fun leerUnDato(username:String):UsuarioDB{
+    /*fun leerUnDato(username:String):UsuarioDB{
         var bbdd=BBDD(this)
         var res:UsuarioDB = bbdd.leerUno(username)
         if (res == null){
@@ -77,5 +78,5 @@ class regUsrPassForm : AppCompatActivity() {
         }
         Log.i("modulo1",res.toString())
         return res
-    }
+    }*/
 }

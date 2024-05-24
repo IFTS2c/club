@@ -1,21 +1,14 @@
 package com.example.app1.modulo1
 
 import android.content.Intent
-import android.database.DatabaseErrorHandler
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewOutlineProvider
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.app1.R
 
 
@@ -33,7 +26,6 @@ class InicioActivity : AppCompatActivity() {
         //crearDatos("Seba", "dddd", "Seba Mam", "12312334", "SebMa@gmail.com", true)
         //crearDatos("Tian", "ffff", "Tian Rod", "13333334", "tianro@gmail.com", true)
         //crearDatos("jos","xxxx","Jose Alvarez", "12123123", "jesalv@gmail.com", true)
-        leerDatos()
 
         val btnLogin = findViewById<AppCompatButton>(R.id.btnLogin)
         val btnReg = findViewById<AppCompatButton>(R.id.btnReg)
@@ -46,12 +38,15 @@ class InicioActivity : AppCompatActivity() {
                 view, hasFocus -> if (hasFocus) { etxPass.hint = "" }
         }
 
+
+        val us= bbdd.leerUnDato(etxUser.text.toString())
+
         btnLogin.setOnClickListener{
             val inputUser:String = etxUser.text.toString()
             val inputPass:String = etxPass.text.toString()
 
             if (inputUser.isNotEmpty() && inputPass.isNotEmpty()){
-                val solicRead:UsuarioDB = leerUnDato(inputUser)
+                val solicRead:UsuarioDB = bbdd.leerUnDato(inputUser)
                 Log.i("Modulo1","solicRead ${solicRead.toString()}, inputPass ${inputPass}")
                 if (solicRead.password == inputPass){
                     val intent = Intent(this, userForm::class.java)
@@ -88,9 +83,9 @@ class InicioActivity : AppCompatActivity() {
 
     }
 
-    fun leerUnDato(username:String):UsuarioDB{
+    /*fun leerUnDato(username:String):UsuarioDB{
         val bbdd=BBDD(this)
-        val res:UsuarioDB = bbdd.leerUno(username)
+        val res:UsuarioDB = bbdd.leerUnDato(username)
         Log.i("modulo1",res.toString())
         return res
     }
@@ -114,7 +109,7 @@ class InicioActivity : AppCompatActivity() {
         val res = bbdd.insertar(usr)
         Log.i("modulo1", res)
         return res
-    }
+    }*/
 
 
 }

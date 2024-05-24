@@ -30,6 +30,7 @@ class BBDD(contexto: Context): SQLiteOpenHelper(contexto, bbdd, null,2) {
         contenedorValores.put("dni", usr.dni)
         contenedorValores.put("email", usr.email)
         contenedorValores.put("asociado", usr.asociado)
+        contenedorValores.put("codAct", usr.codAct)
 
         var resultado = db.insert("UsuarioDB", null, contenedorValores)
         if (resultado==-1.toLong()) {
@@ -49,16 +50,14 @@ class BBDD(contexto: Context): SQLiteOpenHelper(contexto, bbdd, null,2) {
         if(resultado.moveToFirst()) {
             do{
                 var usr = UsuarioDB()
-                val a:Int = resultado.getColumnIndex("id")
-                val b:Int = resultado.getColumnIndex("username")
-                val c:Int = resultado.getColumnIndex("password")
-                usr.id = resultado.getInt(a)
-                usr.username = resultado.getString(b)
-                usr.password = resultado.getString(c)
+                usr.id = resultado.getInt(0)
+                usr.username = resultado.getString(1)
+                usr.password = resultado.getString(2)
                 usr.nombreApellido = resultado.getString(3)
                 usr.dni = resultado.getString(4)
                 usr.email = resultado.getString(5)
                 usr.asociado = resultado.getString(6) == "true"
+                usr.codAct = resultado.getInt((7))
                 lista.add(usr)
             }while(resultado.moveToNext())
             resultado.close()
@@ -68,7 +67,7 @@ class BBDD(contexto: Context): SQLiteOpenHelper(contexto, bbdd, null,2) {
         return lista
     }
 
-    fun leerUno(usNm:String):UsuarioDB{
+    fun leerUnDato(usNm:String):UsuarioDB{
         var usRes:UsuarioDB = UsuarioDB()
         val db =  this.readableDatabase
         val sql = "select * from UsuarioDB where username == '${usNm}'"
@@ -81,7 +80,8 @@ class BBDD(contexto: Context): SQLiteOpenHelper(contexto, bbdd, null,2) {
             usRes.dni = resultado.getString(4)
             usRes.email = resultado.getString(5)
             usRes.asociado = resultado.getInt(6)==1
-            Log.i("modulo1","LeerUno => id: ${usRes.id} username: ${usRes.username} pass: ${usRes.password} nomAp: ${usRes.nombreApellido}. dni: ${usRes.dni}, email: ${usRes.email}, asoc: ${usRes.asociado}")
+            usRes.codAct = resultado.getInt((7))
+            Log.i("modulo1","LeerUno => id: ${usRes.id} username: ${usRes.username} pass: ${usRes.password} nomAp: ${usRes.nombreApellido}. dni: ${usRes.dni}, email: ${usRes.email}, asoc: ${usRes.asociado}, codAct: ${usRes.codAct}")
             resultado.close()
             return usRes
         }

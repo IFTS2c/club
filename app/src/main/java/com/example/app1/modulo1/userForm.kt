@@ -5,11 +5,10 @@ import android.util.Log
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.app1.R
 
 class userForm : AppCompatActivity() {
+    val bbdd = BBDD(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -17,10 +16,17 @@ class userForm : AppCompatActivity() {
 
         val username:String = intent.extras?.getString("username").orEmpty()
         val nombreApellido:String = intent.extras?.getString("nombreApellido").orEmpty()
+        val userSelected = bbdd.leerUnDato(username)
         val userNameText = findViewById<TextView>(R.id.userName)
-        //val userPassText = findViewById<TextView>(R.id.pass)
+        val categoriaUser = findViewById<TextView>(R.id.categoria)
+
+        if (userSelected.asociado){
+            categoriaUser.text = "Socio"
+        } else {
+            categoriaUser.text = "No Socio"
+        }
+
         userNameText.text = "Bienvenido " + nombreApellido
-        Log.i("Modulo1","Pantalla_user. User: ${nombreApellido}")
 
         val btnActividad = findViewById<TextView>(R.id.btnActividad)
         val btnPagar = findViewById<TextView>(R.id.btnPagar)
@@ -33,7 +39,7 @@ class userForm : AppCompatActivity() {
         btnPagar.setOnClickListener(){
 
         }
-        
+
         btnCarnet.setOnClickListener(){
 
         }
@@ -44,10 +50,10 @@ class userForm : AppCompatActivity() {
             insets
         }*/
     }
-    fun leerUnDato(username:String):UsuarioDB{
+    /*fun leerUnDato(username:String):UsuarioDB{
         val bbdd=BBDD(this)
-        var res:UsuarioDB = bbdd.leerUno(username)
+        var res:UsuarioDB = bbdd.leerUnDato(username)
         Log.i("modulo1",res.toString())
         return res
-    }
+    }*/
 }

@@ -8,6 +8,7 @@ class UsuarioDB {
     var dni:String = ""
     var email:String = ""
     var asociado:Boolean = false
+    var codAct:Int = 0
 
     constructor(){}
 
@@ -28,7 +29,7 @@ class UsuarioDB {
     }
 
     override fun toString(): String {
-        return "UsuarioDB(id=${id}, username='${username}', password='${password}', nombreApellido='${nombreApellido}', dni='${dni}', email='${email}', asociado=${asociado})"
+        return "UsuarioDB(id=${id}, username='${username}', password='${password}', nombreApellido='${nombreApellido}', dni='${dni}', email='${email}', asociado=${asociado}, codAct=${codAct})"
     }
 
 }
