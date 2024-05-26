@@ -30,7 +30,7 @@ class BBDD(contexto: Context): SQLiteOpenHelper(contexto, bbdd, null,2) {
         contenedorValores.put("dni", usr.dni)
         contenedorValores.put("email", usr.email)
         contenedorValores.put("asociado", usr.asociado)
-        contenedorValores.put("codAct", usr.codAct)
+        contenedorValores.put("codAct", 0)
 
         var resultado = db.insert("UsuarioDB", null, contenedorValores)
         if (resultado==-1.toLong()) {

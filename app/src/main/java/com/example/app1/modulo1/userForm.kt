@@ -6,9 +6,11 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.app1.R
+import com.example.app1.modulo1.tools.toolsVal
 
 class userForm : AppCompatActivity() {
     val bbdd = BBDD(this)
+    val t = toolsVal()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

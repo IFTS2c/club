@@ -10,18 +10,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import com.example.app1.R
+import com.example.app1.modulo1.tools.toolsVal
 
 
 class InicioActivity : AppCompatActivity() {
     var bbdd=BBDD(this)
+    var t = toolsVal()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_inicio)
 
-        //val users = mutableListOf("Seba","Tian")
-        //val passes = mutableListOf("dddd","rrrr")
 
         //crearDatos("Seba", "dddd", "Seba Mam", "12312334", "SebMa@gmail.com", true)
         //crearDatos("Tian", "ffff", "Tian Rod", "13333334", "tianro@gmail.com", true)
